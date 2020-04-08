@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_documentation,hr.documentation,model_hr_documentation,base.group_user,1,1,1,0
+access_hr_documentation_objects,hr.documentation.objects,model_hr_documentation_objects,base.group_user,1,1,1,0
+access_hr_documentation_flow,hr.documentation.flow,model_hr_documentation_flow,base.group_user,1,1,1,0
+access_hr_documentation_flow_objects,hr.documentation.flow.objects,model_hr_documentation_flow_objects,base.group_user,1,1,1,0

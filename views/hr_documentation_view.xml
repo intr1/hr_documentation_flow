@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <menuitem
+            name="Flow"
+            id="menu_open_documentation_flow"
+            parent="hr.menu_hr_root"
+            sequence="50"/>
+        
+        <record id="view_documenation_flow_configuration_form" model="ir.ui.view">
+            <field name="name">hr.documentation.configuration.form</field>
+            <field name="model">hr.documentation</field>
+            <field name="arch" type="xml">
+                <form string="Flow">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description" placeholder="No Description Provided"/>
+
+                        </group>
+                            <notebook>
+                                <page string="Flow Objects">
+                                    <field name="o2m_flow_objects">
+                                        <tree editable="bottom">
+                                            <field name="flow_type"/>
+                                            <field name="m2o_departments" attrs="{'invisible': [('flow_type', '!=', 'department_head')]}"/>
+                                            <field name="m2o_employee" attrs="{'invisible': [('flow_type', '!=', 'employee')]}"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>                       
+                    </sheet>                              
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_documenation_flow_configuration_tree" model="ir.ui.view">
+            <field name="name">hr.documentation.configuration.tree</field>
+            <field name="model">hr.documentation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description" placeholder="No Description Provided"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="open_documenation_flow_configuration" model="ir.actions.act_window">
+            <field name="name">Flow</field>
+            <field name="res_model">hr.documentation</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="view_id" ref="view_planned_tours_tree"/>-->
+            <!--<field name="search_view_id" ref="view_employee_filter"/>-->
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new location.
+              </p><p>
+                With just a quick glance on the location screen, you
+                can easily find all the information you need for each place.
+                
+              </p>
+            </field>
+        </record>   
+                
+        <menuitem
+            name="Documentation Flow"
+            id="menu_open_documentation_flow_configuration"
+            action="open_documenation_flow_configuration"
+            parent="hr.menu_human_resources_configuration"
+            sequence="2"/> 
+        
+        
+        
+        
+        <record id="view_documenation_flow_main_form" model="ir.ui.view">
+            <field name="name">hr.documentation.flow.main.form</field>
+            <field name="model">hr.documentation.flow</field>
+            <field name="arch" type="xml">
+                <form string="Flow">
+                    <header>
+                        <button string="Validate" type="object" name="validate" attrs="{'invisible': ['|',('enable_to_validate', '!=', True),('state','in',('done','canceled'))]}"/>
+                        <button string="Cancel" type="object" name="cancel" attrs="{'invisible': ['|',('enable_to_validate', '!=', True),('state','=','canceled')]}"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,in_progress,done"/>
+
+                    </header>
+
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="id" invisible="1"/>
+                                <field name="enable_to_validate" invisible="1"/>
+                                
+                                <field name="m2o_validator_user" invisible="1"/>
+                                <field name="name"/>                            
+                                <field name="m2o_documentation"/>
+                                <field name="attach_document" filename="attach_doc_name"/>
+                                <field name="attach_doc_name" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="m2o_validator_employee" invisible="0"/>
+                                <field name="m2o_employee" attrs="{'readonly': [('id', '>', 0)]}"/>
+                            </group>
+                            
+                            
+                            
+
+                        </group>
+                        <div attrs="{'invisible': [('state', '!=', 'canceled')]}">
+                            <label for="cancel_reason"/>
+                            <field name="cancel_reason"/>
+                        </div>
+                        <div>
+                            <label for="description"/>
+                            <field name="description" widget="html"/>
+                        </div>
+                        <notebook>
+                            <page string="Flow Objects">
+                                <field name="o2m_flow_objects">
+                                    <tree create="false" edit="false">
+                                        <field name="m2o_employee"/>
+                                        <field name="comment" placeholder="No Comment Provided"/>
+                                        <field name="in_out"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>                       
+                    </sheet>                              
+                </form>
+            </field>
+        </record>
+        
+        <record id="view_documenation_flow_main_tree" model="ir.ui.view">
+            <field name="name">hr.documentation.flow.main.tree</field>
+            <field name="model">hr.documentation.flow</field>
+            <field name="arch" type="xml">
+                <tree decoration-bf="state=='new'" decoration-warning="state=='in_progress'"  decoration-success="state=='done'" decoration-danger="state=='canceled'">
+                    <field name="name"/>
+                    <field name="m2o_employee"/>
+                    <field name="m2o_documentation"/>
+                    <field name="state"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="open_documenation_main_flow" model="ir.actions.act_window">
+            <field name="name">Flow</field>
+            <field name="res_model">hr.documentation.flow</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new location.
+              </p><p>
+                With just a quick glance on the location screen, you
+                can easily find all the information you need for each place.
+                
+              </p>
+            </field>
+        </record>   
+                
+        <menuitem
+            name="Documentations"
+            id="menu_open_documenation_main_flow"
+            action="open_documenation_main_flow"
+            parent="menu_open_documentation_flow"
+            sequence="20"/> 
+        
+        
+        <!--popup for validation-->
+        
+        <record id="view_documenation_flow_action_popup" model="ir.ui.view">
+            <field name="name">hr.documentation.popups.form</field>
+            <field name="model">hr.documentation.popups</field>
+            <field name="arch" type="xml">
+                <form string="Validation Action">
+                    <sheet>
+                        <group>
+                            <field name="record_id"/>
+                            <field name="action_type"/>
+                            <field name="comment" placeholder="No Comment Provided"/>
+                        </group>
+                        <footer>
+                            <button string="Do Action" type="object" name="validate" attrs="{'invisible': [('action_type', '!=', 'validate')]}"/>
+                            <button string="Do Action" type="object" name="cancel"  attrs="{'invisible': [('action_type', '!=', 'cancel')]}"/>
+                            <button string="Cancel" special="cancel" class="btn btn-default"/>
+                        </footer>
+                    </sheet>                              
+                </form>
+            </field>
+        </record>
+        
+        
+        
+    </data>
+</odoo>
